@@ -7,513 +7,227 @@
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --vert-fonce:  #0d3d24;
-    --vert-moyen:  #1a6b3c;
-    --vert-clair:  #d4ede0;
-    --or:          #c9952a;
-    --or-pale:     #fdf3dc;
-    --or-trait:    #e8c96a;
-    --blanc:       #ffffff;
-    --gris-fond:   #f4f2ed;
-    --gris-bord:   #ddd8ce;
-    --texte:       #1a1a1a;
-    --admis-bg:    #e6f4ee;
-    --admis-txt:   #0d5c2e;
-    --non-bg:      #fdecea;
-    --non-txt:     #b91c1c;
+    --vert-fonce:#0d3d24; --vert-moyen:#1a6b3c; --or:#c9952a; --or-pale:#fdf3dc;
+    --or-trait:#e8c96a; --gris-fond:#f4f2ed; --gris-bord:#ddd8ce; --texte:#1a1a1a;
+    --retenu-bg:#e6f4ee; --retenu-txt:#0d5c2e;
+    --attente-bg:#eff6ff; --attente-txt:#1d4ed8;
+    --ajourne-bg:#fdecea; --ajourne-txt:#b91c1c;
   }
-
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body {
-    font-family: 'IBM Plex Sans', sans-serif;
-    background: var(--gris-fond);
-    color: var(--texte);
-    min-height: 100vh;
-  }
-
-  /* ── EN-TÊTE ── */
-  header {
-    background: var(--vert-fonce);
-    padding: 0;
-    position: relative;
-    overflow: hidden;
-  }
-  .header-motif {
-    position: absolute; inset: 0;
-    background-image: repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 18px,
-      rgba(255,255,255,0.03) 18px,
-      rgba(255,255,255,0.03) 19px
-    );
-  }
-  .header-inner {
-    position: relative;
-    padding: 28px 24px 22px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-  }
-  .header-top {
-    display: flex; align-items: center; gap: 14px;
-  }
-  .embleme {
-    width: 56px; height: 56px;
-    border-radius: 50%;
-    background: var(--or);
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Amiri', serif;
-    font-size: 26px; color: #fff;
-    flex-shrink: 0;
-    box-shadow: 0 0 0 3px rgba(201,149,42,0.35);
-  }
-  .header-titres { text-align: left; }
-  .titre-ecole {
-    font-family: 'Amiri', serif;
-    font-size: clamp(17px, 4vw, 24px);
-    font-weight: 700;
-    color: #fff;
-    line-height: 1.2;
-  }
-  .titre-sous {
-    font-size: 13px;
-    color: rgba(255,255,255,0.65);
-    margin-top: 3px;
-  }
-  .header-badge {
-    background: var(--or);
-    color: #fff;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    padding: 5px 18px;
-    border-radius: 20px;
-  }
-
-  /* ── BANDEAU STATS ── */
-  .stats {
-    background: var(--or-pale);
-    border-top: 2px solid var(--or-trait);
-    border-bottom: 2px solid var(--or-trait);
-    padding: 12px 20px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
-  }
-  .stat-item {
-    display: flex; align-items: center; gap: 7px;
-    background: #fff;
-    border: 1.5px solid var(--gris-bord);
-    border-radius: 30px;
-    padding: 5px 16px;
-    font-size: 13px;
-    font-weight: 600;
-  }
-  .stat-dot {
-    width: 9px; height: 9px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-  .dot-total  { background: var(--vert-moyen); }
-  .dot-admis  { background: #15803d; }
-  .dot-rev    { background: #b45309; }
-  .dot-adj    { background: #b91c1c; }
-
-  /* ── ZONE RECHERCHE ── */
-  .recherche-zone {
-    max-width: 540px;
-    margin: 36px auto 0;
-    padding: 0 18px;
-  }
-  .recherche-label {
-    display: block;
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--vert-moyen);
-    letter-spacing: .3px;
-    margin-bottom: 9px;
-  }
-  .recherche-wrap {
-    display: flex;
-    background: #fff;
-    border: 2px solid var(--gris-bord);
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 2px 14px rgba(0,0,0,.07);
-    transition: border-color .2s;
-  }
-  .recherche-wrap:focus-within {
-    border-color: var(--or);
-    box-shadow: 0 0 0 3px rgba(201,149,42,.15);
-  }
-  #saisie {
-    flex: 1;
-    border: none; outline: none;
-    padding: 14px 18px;
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--texte);
-    background: transparent;
-  }
-  #saisie::placeholder { color: #bbb; font-weight: 400; }
-  .btn-chercher {
-    background: var(--vert-moyen);
-    color: #fff;
-    border: none; cursor: pointer;
-    padding: 0 22px;
-    font-size: 20px;
-    transition: background .2s;
-    display: flex; align-items: center;
-  }
-  .btn-chercher:hover { background: var(--vert-fonce); }
-  .aide {
-    text-align: center;
-    font-size: 12px;
-    color: #999;
-    margin-top: 8px;
-  }
-
-  /* ── RÉSULTATS ── */
-  #resultats {
-    max-width: 540px;
-    margin: 20px auto 50px;
-    padding: 0 18px;
-  }
-
-  .multi-info {
-    font-size: 13px; font-weight: 600;
-    color: #666;
-    margin-bottom: 12px;
-  }
-
-  /* ── CARTE ── */
-  .carte {
-    background: #fff;
-    border-radius: 14px;
-    box-shadow: 0 3px 18px rgba(0,0,0,.09);
-    overflow: hidden;
-    margin-bottom: 14px;
-    animation: glisse .3s ease;
-  }
-  @keyframes glisse {
-    from { opacity:0; transform:translateY(14px); }
-    to   { opacity:1; transform:translateY(0); }
-  }
-
-  .carte-haut {
-    padding: 16px 20px 12px;
-    border-bottom: 1.5px solid var(--gris-bord);
-  }
-  .carte-nom {
-    font-size: 17px;
-    font-weight: 700;
-    color: var(--vert-fonce);
-    line-height: 1.3;
-    margin-bottom: 6px;
-  }
-  .carte-meta {
-    display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
-  }
-  .tag {
-    font-size: 11px; font-weight: 700;
-    padding: 3px 10px;
-    border-radius: 20px;
-    letter-spacing: .3px;
-  }
-  .tag-table {
-    background: var(--gris-fond);
-    color: #666;
-    border: 1px solid var(--gris-bord);
-  }
-  .tag-admis {
-    background: var(--admis-bg);
-    color: var(--admis-txt);
-  }
-  .tag-revision {
-    background: #fff7ed;
-    color: #92400e;
-  }
-  .tag-ajourne {
-    background: var(--non-bg);
-    color: var(--non-txt);
-  }
-
-  .carte-bas {
-    padding: 12px 20px 14px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .rang-bloc {
-    text-align: center;
-    background: var(--gris-fond);
-    border-radius: 10px;
-    padding: 8px 14px;
-    min-width: 64px;
-    flex-shrink: 0;
-  }
-  .rang-label { font-size: 10px; font-weight: 700; color: #999; text-transform: uppercase; letter-spacing:.5px; }
-  .rang-val   { font-size: 22px; font-weight: 800; color: var(--vert-moyen); line-height:1.1; }
-  .rang-sur   { font-size: 11px; color: #aaa; }
-  .carte-infos {
-    flex:1;
-    font-size: 13px;
-    color: #555;
-    line-height: 1.7;
-  }
-  .carte-infos strong { color: var(--texte); font-weight: 600; }
-
-  /* Pas de résultat */
-  .vide {
-    text-align: center;
-    padding: 44px 20px;
-    color: #aaa;
-  }
-  .vide .icone { font-size: 38px; margin-bottom: 12px; }
-  .vide p { font-size: 15px; font-weight: 600; color: #888; }
-  .vide small { font-size: 13px; }
-
-  /* ── PIED ── */
-  footer {
-    text-align: center;
-    padding: 20px;
-    font-size: 12px;
-    color: #aaa;
-    border-top: 1px solid var(--gris-bord);
-    background: #fff;
-  }
-  footer strong { color: var(--vert-moyen); }
-
-  @media (max-width: 420px) {
-    .carte-bas { flex-direction: column; align-items: flex-start; }
-    .rang-bloc { min-width: unset; }
-  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'IBM Plex Sans',sans-serif;background:var(--gris-fond);color:var(--texte);min-height:100vh}
+  header{background:var(--vert-fonce);position:relative;overflow:hidden}
+  .hm{position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,transparent,transparent 18px,rgba(255,255,255,.03) 18px,rgba(255,255,255,.03) 19px)}
+  .hi{position:relative;padding:28px 24px 22px;display:flex;flex-direction:column;align-items:center;gap:10px}
+  .ht{display:flex;align-items:center;gap:14px}
+  .em{width:56px;height:56px;border-radius:50%;background:var(--or);display:flex;align-items:center;justify-content:center;font-family:'Amiri',serif;font-size:26px;color:#fff;flex-shrink:0;box-shadow:0 0 0 3px rgba(201,149,42,.35)}
+  .te{font-family:'Amiri',serif;font-size:clamp(17px,4vw,24px);font-weight:700;color:#fff;line-height:1.2}
+  .ts{font-size:13px;color:rgba(255,255,255,.65);margin-top:3px}
+  .hb{background:var(--or);color:#fff;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:5px 18px;border-radius:20px}
+  .stats{background:var(--or-pale);border-top:2px solid var(--or-trait);border-bottom:2px solid var(--or-trait);padding:12px 20px;display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+  .si{display:flex;align-items:center;gap:7px;background:#fff;border:1.5px solid var(--gris-bord);border-radius:30px;padding:5px 16px;font-size:13px;font-weight:600}
+  .sd{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+  .d1{background:var(--vert-moyen)} .d2{background:#15803d} .d3{background:#1d4ed8} .d4{background:#b91c1c}
+  .rz{max-width:560px;margin:36px auto 0;padding:0 18px}
+  .rl{display:block;font-size:13px;font-weight:700;color:var(--vert-moyen);letter-spacing:.3px;margin-bottom:9px}
+  .rw{display:flex;background:#fff;border:2px solid var(--gris-bord);border-radius:12px;overflow:hidden;box-shadow:0 2px 14px rgba(0,0,0,.07);transition:border-color .2s}
+  .rw:focus-within{border-color:var(--or);box-shadow:0 0 0 3px rgba(201,149,42,.15)}
+  #saisie{flex:1;border:none;outline:none;padding:14px 18px;font-family:'IBM Plex Sans',sans-serif;font-size:15px;font-weight:500;color:var(--texte);background:transparent}
+  #saisie::placeholder{color:#bbb;font-weight:400}
+  .bc{background:var(--vert-moyen);color:#fff;border:none;cursor:pointer;padding:0 22px;font-size:20px;transition:background .2s;display:flex;align-items:center}
+  .bc:hover{background:var(--vert-fonce)}
+  .ai{text-align:center;font-size:12px;color:#999;margin-top:8px}
+  #res{max-width:560px;margin:20px auto 50px;padding:0 18px}
+  .mi{font-size:13px;font-weight:600;color:#666;margin-bottom:12px}
+  .carte{background:#fff;border-radius:14px;box-shadow:0 3px 18px rgba(0,0,0,.09);overflow:hidden;margin-bottom:14px;animation:gl .3s ease}
+  @keyframes gl{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+  .ch{padding:16px 20px 12px;border-bottom:1.5px solid var(--gris-bord)}
+  .cn{font-size:17px;font-weight:700;color:var(--vert-fonce);line-height:1.3;margin-bottom:6px}
+  .cm{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .tag{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:.3px}
+  .tt{background:var(--gris-fond);color:#666;border:1px solid var(--gris-bord)}
+  .tr{background:var(--retenu-bg);color:var(--retenu-txt)}
+  .ta{background:var(--attente-bg);color:var(--attente-txt)}
+  .tj{background:var(--ajourne-bg);color:var(--ajourne-txt)}
+  .cn2{padding:14px 20px;border-bottom:1.5px solid var(--gris-bord)}
+  .ng{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+  .nb{background:var(--gris-fond);border-radius:9px;padding:9px 8px;text-align:center}
+  .nl{font-size:10px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px}
+  .nv{font-size:20px;font-weight:800;color:var(--vert-moyen);line-height:1.1}
+  .nm{font-size:10px;color:#bbb;font-weight:600}
+  .tb{display:flex;gap:8px}
+  .tbo{flex:1;border-radius:9px;padding:9px 12px;text-align:center}
+  .tbo.t1{background:#e8f5ee} .tbo.t2{background:var(--or-pale);border:1.5px solid var(--or-trait)}
+  .tl{font-size:10px;font-weight:700;color:#666;margin-bottom:2px;text-transform:uppercase;letter-spacing:.4px}
+  .tv{font-size:20px;font-weight:800}
+  .t1 .tv{color:var(--vert-moyen)} .t2 .tv{color:var(--or)}
+  .cb{padding:12px 20px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .rb{text-align:center;background:var(--gris-fond);border-radius:10px;padding:8px 14px;min-width:64px;flex-shrink:0}
+  .rbl{font-size:10px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:.5px}
+  .rbv{font-size:22px;font-weight:800;color:var(--vert-moyen);line-height:1.1}
+  .rbs{font-size:11px;color:#aaa}
+  .db{padding:8px 18px;border-radius:10px;font-size:13px;font-weight:800;letter-spacing:.3px;text-align:center}
+  .dr{background:var(--retenu-bg);color:var(--retenu-txt)}
+  .da{background:var(--attente-bg);color:var(--attente-txt)}
+  .dj{background:var(--ajourne-bg);color:var(--ajourne-txt)}
+  .vide{text-align:center;padding:44px 20px;color:#aaa}
+  .vide .ic{font-size:38px;margin-bottom:12px}
+  .vide p{font-size:15px;font-weight:600;color:#888}
+  footer{text-align:center;padding:20px;font-size:12px;color:#aaa;border-top:1px solid var(--gris-bord);background:#fff}
+  footer strong{color:var(--vert-moyen)}
 </style>
 </head>
 <body>
-
 <header>
-  <div class="header-motif"></div>
-  <div class="header-inner">
-    <div class="header-top">
-      <div class="embleme">ﻩ</div>
-      <div class="header-titres">
-        <div class="titre-ecole">Groupe Scolaire Confessionnel Hînneh</div>
-        <div class="titre-sous">Campus de Biabou — Abobo — COSIM · Côte d'Ivoire</div>
+  <div class="hm"></div>
+  <div class="hi">
+    <div class="ht">
+      <div class="em">ﻩ</div>
+      <div>
+        <div class="te">Groupe Scolaire Confessionnel Hînneh</div>
+        <div class="ts">Campus de Biabou — Abobo — COSIM · Côte d'Ivoire</div>
       </div>
     </div>
-    <div class="header-badge">2ème Test d'entrée en 6ème · Juillet 2026</div>
+    <div class="hb">2ème Test d'entrée en 6ème · Juillet 2026</div>
   </div>
 </header>
-
 <div class="stats">
-  <div class="stat-item"><span class="stat-dot dot-total"></span>90 candidats</div>
-  <div class="stat-item"><span class="stat-dot dot-admis"></span>58 admis</div>
-  <div class="stat-item"><span class="stat-dot dot-rev"></span>15 en révision</div>
-  <div class="stat-item"><span class="stat-dot dot-adj"></span>16 ajournés</div>
+  <div class="si"><span class="sd d1"></span>90 candidats</div>
+  <div class="si"><span class="sd d2"></span>16 admis retenus</div>
+  <div class="si"><span class="sd d3"></span>42 liste d'attente</div>
+  <div class="si"><span class="sd d4"></span>32 ajournés</div>
 </div>
-
-<div class="recherche-zone">
-  <label class="recherche-label" for="saisie">Rechercher le résultat de votre enfant</label>
-  <div class="recherche-wrap">
-    <input type="text" id="saisie"
-           placeholder="Saisir le nom ou le prénom…"
-           autocomplete="off" autocorrect="off" spellcheck="false"
-           oninput="chercher(this.value)" />
-    <button class="btn-chercher" onclick="chercher(document.getElementById('saisie').value)">→</button>
+<div class="rz">
+  <label class="rl" for="saisie">Rechercher le résultat de votre enfant</label>
+  <div class="rw">
+    <input type="text" id="saisie" placeholder="Saisir le nom ou le prénom…" autocomplete="off" autocorrect="off" spellcheck="false" oninput="ch(this.value)"/>
+    <button class="bc" onclick="ch(document.getElementById('saisie').value)">→</button>
   </div>
-  <p class="aide">Minimum 3 lettres · Insensible aux accents et à la casse</p>
+  <p class="ai">Minimum 3 lettres · Insensible aux accents et à la casse</p>
 </div>
-
-<div id="resultats"></div>
-
-<footer>
-  <strong>GSC Hînneh · Campus Biabou</strong> — Résultats provisoires · Année scolaire 2026–2027<br>
-  Pour toute réclamation, s'adresser au secrétariat du campus · Code : 057 908
-</footer>
-
+<div id="res"></div>
+<footer><strong>GSC Hînneh · Campus Biabou</strong> — Résultats provisoires · Année scolaire 2026–2027<br>Pour toute réclamation, s'adresser au secrétariat du campus · Code : 057 908</footer>
 <script>
-// ── BASE DE DONNÉES — 2ème TEST — 90 candidats ──
-// Format : [nom_complet, no_table, rang, decision]
-// decision : "Admis" | "En révision" | "Ajourné"
-const ELEVES = [
-  // ADMIS (58)
-  ["GUINDO AICHA",              "2689", 1,  "Admis"],
-  ["COULIBALY HAYA AMINATE",    "2616", 2,  "Admis"],
-  ["TRAORE N'GOLO MOUSSA",      "2670", 3,  "Admis"],
-  ["COULIBALY ALYA",            "2626", 4,  "Admis"],
-  ["N'TAKPE DANIEL",            "2620", 5,  "Admis"],
-  ["DOUMBIA ZEINAB NOURA",      "2646", 6,  "Admis"],
-  ["GUEI DIABY FANTA",          "2650", 7,  "Admis"],
-  ["SANGARE ADAMA MALICK",      "2652", 8,  "Admis"],
-  ["SY SAVANE AL HASSANE",      "2676", 8,  "Admis"],
-  ["DIARRASSOUBA ALMAMI",       "2653", 9,  "Admis"],
-  ["BAIKORO AMINAT SAMIRA",     "2654", 10, "Admis"],
-  ["AZEEZ KHALID",              "2602", 11, "Admis"],
-  ["OUATTARA DJENEBA",          "2614", 12, "Admis"],
-  ["DRAME ROUKIATOU",           "2644", 13, "Admis"],
-  ["OLADYE FARIDATU",           "2678", 13, "Admis"],
-  ["BAMBA MOHAMED AYOUB",       "2628", 14, "Admis"],
-  ["SALAMI MOHAMED MUBARAK",    "2660", 14, "Admis"],
-  ["AKANGBE RAYAN RAMADA",      "2640", 15, "Admis"],
-  ["DIARRASSOUBA MOYELE",       "2638", 16, "Admis"],
-  ["SOULEMANA DJALILA",         "2607", 17, "Admis"],
-  ["CAMARA ALIMETOU",           "2635", 17, "Admis"],
-  ["KONE SONGUIDA FATIMA C.",   "2642", 18, "Admis"],
-  ["DIALLO KADIDJATOU",         "2608", 19, "Admis"],
-  ["KOFFI JOSUE",               "2621", 19, "Admis"],
-  ["SANOGO KHADY POOR",         "2617", 20, "Admis"],
-  ["SOUMAHORO ALLASSANE",       "2623", 21, "Admis"],
-  ["TRAORE TENIN",              "2606", 21, "Admis"],
-  ["GUIRE NABI YOUSSOUF",       "2668", 22, "Admis"],
-  ["OUATTARA ZIE",              "2619", 22, "Admis"],
-  ["KAMARA MARIAME Y.",         "2631", 23, "Admis"],
-  ["KONE FATOUMATA ZARA",       "2651", 24, "Admis"],
-  ["CISSE AICHATOU",            "2630", 24, "Admis"],
-  ["FOFANA EL AMINE MEMASSA",   "2659", 24, "Admis"],
-  ["DAO ADAMA",                 "2661", 25, "Admis"],
-  ["DIARRASSOUBA LAMINE",       "2686", 25, "Admis"],
-  ["OUATTARA AYOUBA",           "2677", 26, "Admis"],
-  ["FOFANA NOURA MAFINY",       "2674", 26, "Admis"],
-  ["DIALLA LAYE OUSMANE",       "2675", 26, "Admis"],
-  ["TRAORE CHEICK HAMED",       "2645", 27, "Admis"],
-  ["KAMA ISMAEL",               "2643", 27, "Admis"],
-  ["KONE ABDOUL GAFAR",         "2622", 28, "Admis"],
-  ["GANGABE NOURA KENZA",       "2627", 29, "Admis"],
-  ["BUSARI MOHAMED",            "2669", 30, "Admis"],
-  ["BAMBA HADAM'S NOSSIAGBE",   "2671", 30, "Admis"],  // recheck: OUALITTA ZIE MOUSSA
-  ["OUALITTA ZIE MOUSSA",       "2671", 31, "Admis"],
-  ["TOE ABDOUL MAJID",          "2632", 32, "Admis"],
-  ["DAO LATIFA DAOUDA",         "2662", 32, "Admis"],
-  ["KONATE ADTARA FATIMA",      "2663", 33, "Admis"],
-  ["BAKAYOKO MAIMOUNA",         "2618", 34, "Admis"],
-  ["TRAORE FATOUMATA",          "2612", 35, "Admis"],
-  ["SIDIBE KANI",               "2679", 36, "Admis"],
-  ["DIARRA MOHAMED ABIB",       "2672", 37, "Admis"],
-  ["OUATTARA HOURIA",           "2664", 38, "Admis"],
-  ["KONE AICHA YASMINE",        "2656", 38, "Admis"],
-  ["FOFANA KADIDIA",            "2682", 39, "Admis"],
-  ["TAPSOBA ZEINAB",            "2688", 39, "Admis"],
-  ["AJADI SAHADAT",             "2610", 40, "Admis"],
-  ["ALYA MADINA",               "2613", 41, "Admis"],
-  // EN RÉVISION (15)
-  ["SANKARA MOUHAMED",          "2611", 42, "En révision"],
-  ["CISSE NABINTOU ZARA",       "2673", 43, "En révision"],
-  ["TRAORE ABOUBACAR",          "2615", 44, "En révision"],
-  ["SOGODOGO ALIMATA S.",        "2625", 45, "En révision"],
-  ["DIARRASSOUBA SIRA YASMINE", "2639", 46, "En révision"],
-  ["SOUMAHORO CHEICK",          "2641", 47, "En révision"],
-  ["TRAORE YELI MASSANDJE",     "2633", 48, "En révision"],
-  ["TRAORE RAHIMA ALIMATOU",    "2634", 49, "En révision"],
-  ["AJADI SOBIRA",              "2609", 50, "En révision"],
-  ["OUEDRAOGO MOHAMED",         "2604", 51, "En révision"],
-  ["BODE FAHICORT",             "2605", 52, "En révision"],
-  ["TRAORE CHEICK",             "2603", 53, "En révision"],
-  ["DIABAGATE ISMAEL",          "2649", 54, "En révision"],
-  ["MOHAMED IBRAHIMA RAKIA",    "2629", 55, "En révision"],
-  ["SOUMAHORO ABOUBAKAR",       "2624", 56, "En révision"],
-  // AJOURNÉS (16)
-  ["KONE KADER AZIZ",           "2637", 57, "Ajourné"],
-  ["DIALLO FATOUMATA",          "2647", 58, "Ajourné"],
-  ["SOUMAHORO MOHAMED",         "2655", 59, "Ajourné"],
-  ["DIAKITE OUSMANE",           "2648", 60, "Ajourné"],
-  ["GUIDOONE BINTOU",           "2658", 61, "Ajourné"],
-  ["OUEDRAOGO IBRAHIM",         "2636", 62, "Ajourné"],
-  ["SANGARE OUSMANE",           "2681", 63, "Ajourné"],
-  ["BAYONARE YASMINE",          "2690", 64, "Ajourné"],
-  ["SIDIBE BEN HAMAIDE",        "2666", 65, "Ajourné"],
-  ["COULIBALY MAIMOUNA",        "2687", 66, "Ajourné"],
-  ["ADTIBADE RAYAN",            "2667", 67, "Ajourné"],
-  ["IBRAHEE AL ANINULAYI",      "2684", 68, "Ajourné"],
-  ["ZIDA SEYDOU",               "2685", 68, "Ajourné"],
-  ["DIOMANDE BEN AZIZ",         "2665", 69, "Ajourné"],
-  ["DIABY MASSANDJE",           "2680", 70, "Ajourné"],
-  ["BAMBA MORY VANLY",          "2683", 71, "Ajourné"],
-  // SANS NOTES
-  ["KONE HASSANE",              "2601", null, null],
+const E=[
+  ["GUINDO AICHA","2689",48,18,50,1,"retenu"],
+  ["COULIBALY HAYA AMINATE","2616",44,19.5,50,2,"retenu"],
+  ["TRAORE N'GOLO MOUSSA","2670",45,16,48,3,"retenu"],
+  ["COULIBALY ALYA","2626",42,19.5,44,4,"retenu"],
+  ["N'TAKPE DANIEL","2620",39,18,46,5,"retenu"],
+  ["DOUMBIA ZEINAB NOURA","2646",43,19,38,6,"retenu"],
+  ["GUEI DIABY FANTA","2650",39,18,42,7,"retenu"],
+  ["SANGARE ADAMA MALICK","2652",42,14,42,8,"retenu"],
+  ["SY SAVANE AL HASSANE","2676",46,16,36,8,"retenu"],
+  ["DIARRASSOUBA ALMAMI","2653",37,17,42,9,"retenu"],
+  ["BAIKORO AMINAT SAMIRA","2654",41,16,36,10,"retenu"],
+  ["AZEEZ KHALID","2602",37,15,38,11,"retenu"],
+  ["OUATTARA DJENEBA","2614",39,13,36.5,12,"retenu"],
+  ["DRAME ROUKIATOU","2644",41,13,34,13,"retenu"],
+  ["OLADYE FARIDATU","2678",39,16,33,13,"retenu"],
+  ["BAMBA MOHAMED AYOUB","2628",40,14,33.5,14,"retenu"],
+  ["SALAMI MOHAMED MUBARAK","2660",35,18,34.5,14,"attente"],
+  ["AKANGBE RAYAN RAMADA","2640",33,10,34,15,"attente"],
+  ["DIARRASSOUBA MOYELE","2638",38,13,31,16,"attente"],
+  ["SOULEMANA DJALILA","2607",45,16,21,17,"attente"],
+  ["CAMARA ALIMETOU","2635",41,17,26,17,"attente"],
+  ["KONE SONGUIDA FATIMA C.","2642",39,13,28,18,"attente"],
+  ["DIALLO KADIDJATOU","2608",40,17,27,19,"attente"],
+  ["KOFFI JOSUE","2621",31,2,35,19,"attente"],
+  ["SANOGO KHADY POOR","2617",27,11,32.5,20,"attente"],
+  ["SOUMAHORO ALLASSANE","2623",38,13,28.5,21,"attente"],
+  ["TRAORE TENIN","2606",37,13,22,21,"attente"],
+  ["GUIRE NABI YOUSSOUF","2668",28,17,32.5,22,"attente"],
+  ["OUATTARA ZIE","2619",40,13,32,22,"attente"],
+  ["KAMARA MARIAME Y.","2631",26,13,36,23,"attente"],
+  ["KONE FATOUMATA ZARA","2651",33,12,28.5,24,"attente"],
+  ["CISSE AICHATOU","2630",32,14,28.5,24,"attente"],
+  ["FOFANA EL AMINE MEMASSA","2659",32,10,28.5,24,"attente"],
+  ["DAO ADAMA","2661",26,13,31,25,"attente"],
+  ["DIARRASSOUBA LAMINE","2686",30,16,37.5,25,"attente"],
+  ["OUATTARA AYOUBA","2677",35,12,28.5,26,"attente"],
+  ["FOFANA NOURA MAFINY","2674",35,9,34,26,"attente"],
+  ["DIALLA LAYE OUSMANE","2675",25,2,34.5,26,"attente"],
+  ["TRAORE CHEICK HAMED","2645",34,11,27,27,"attente"],
+  ["KAMA ISMAEL","2643",26,8,27,27,"attente"],
+  ["KONE ABDOUL GAFAR","2622",43,16,24,28,"attente"],
+  ["GANGABE NOURA KENZA","2627",45,6,26.5,29,"attente"],
+  ["BUSARI MOHAMED","2669",24,7,25.5,30,"attente"],
+  ["OUALITTA ZIE MOUSSA","2671",43,10,17,31,"attente"],
+  ["TOE ABDOUL MAJID","2632",35,13,25.5,32,"attente"],
+  ["DAO LATIFA DAOUDA","2662",42,16.5,25,32,"attente"],
+  ["KONATE ADTARA FATIMA","2663",19,16.5,26.5,33,"attente"],
+  ["BAKAYOKO MAIMOUNA","2618",37,8,20.5,34,"attente"],
+  ["TRAORE FATOUMATA","2612",32,13,19,35,"attente"],
+  ["SIDIBE KANI","2679",33,14,19.5,36,"attente"],
+  ["DIARRA MOHAMED ABIB","2672",28,13,16.5,37,"attente"],
+  ["OUATTARA HOURIA","2664",22,6,15,38,"attente"],
+  ["KONE AICHA YASMINE","2656",29,17,19,38,"attente"],
+  ["FOFANA KADIDIA","2682",30,9,19,39,"attente"],
+  ["TAPSOBA ZEINAB","2688",24,6,21,39,"attente"],
+  ["AJADI SAHADAT","2610",28,4,22.5,40,"attente"],
+  ["ALYA MADINA","2613",35,15,13.5,41,"attente"],
+  ["SANKARA MOUHAMED","2611",32,12,38.5,42,"ajourne"],
+  ["CISSE NABINTOU ZARA","2673",34,13,22,43,"ajourne"],
+  ["TRAORE ABOUBACAR","2615",34,10,8.5,44,"ajourne"],
+  ["SOGODOGO ALIMATA S.","2625",37,6,9,45,"ajourne"],
+  ["DIARRASSOUBA SIRA YASMINE","2639",31,13,21,46,"ajourne"],
+  ["SOUMAHORO CHEICK","2641",26,9,23,47,"ajourne"],
+  ["TRAORE YELI MASSANDJE","2633",28,12,14.5,48,"ajourne"],
+  ["TRAORE RAHIMA ALIMATOU","2634",19,5,25,49,"ajourne"],
+  ["AJADI SOBIRA","2609",22,3,16,50,"ajourne"],
+  ["OUEDRAOGO MOHAMED","2604",36,6,18.5,51,"ajourne"],
+  ["BODE FAHICORT","2605",21,4,24,52,"ajourne"],
+  ["TRAORE CHEICK","2603",28,14,20,53,"ajourne"],
+  ["DIABAGATE ISMAEL","2649",32,5,23,54,"ajourne"],
+  ["MOHAMED IBRAHIMA RAKIA","2629",22,11,15.5,55,"ajourne"],
+  ["SOUMAHORO ABOUBAKAR","2624",18,4,5.5,56,"ajourne"],
+  ["KONE KADER AZIZ","2637",32,4,12.5,57,"ajourne"],
+  ["DIALLO FATOUMATA","2647",15,2,9.5,58,"ajourne"],
+  ["SOUMAHORO MOHAMED","2655",27,2,12.5,59,"ajourne"],
+  ["DIAKITE OUSMANE","2648",14,2,11.5,60,"ajourne"],
+  ["GUIDOONE BINTOU","2658",16,7,14,61,"ajourne"],
+  ["OUEDRAOGO IBRAHIM","2636",26,8,7.5,62,"ajourne"],
+  ["SANGARE OUSMANE","2681",20,2,11,63,"ajourne"],
+  ["BAYONARE YASMINE","2690",17,2,16.5,64,"ajourne"],
+  ["SIDIBE BEN HAMAIDE","2666",40,6,5.5,65,"ajourne"],
+  ["COULIBALY MAIMOUNA","2687",14,4,8,66,"ajourne"],
+  ["ADTIBADE RAYAN","2667",29,3,5.5,67,"ajourne"],
+  ["IBRAHEE AL ANINULAYI","2684",14,2,7,68,"ajourne"],
+  ["ZIDA SEYDOU","2685",14,2,7,68,"ajourne"],
+  ["DIOMANDE BEN AZIZ","2665",16,4,2,69,"ajourne"],
+  ["DIABY MASSANDJE","2680",22,2,5.5,70,"ajourne"],
+  ["BAMBA MORY VANLY","2683",21,8,25.5,71,"ajourne"],
+  ["KONE HASSANE","2601",null,null,null,null,"ajourne"],
 ];
-
-function normalise(str) {
-  return str.toLowerCase()
-    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9 ']/g, " ").trim();
-}
-
-function chercher(val) {
-  const q = normalise(val);
-  const div = document.getElementById('resultats');
-  if (q.length < 3) { div.innerHTML = ''; return; }
-
-  const trouves = ELEVES.filter(e => normalise(e[0]).includes(q));
-
-  if (trouves.length === 0) {
-    div.innerHTML = `
-      <div class="vide">
-        <div class="icone">🔍</div>
-        <p>Aucun résultat pour « ${val} »</p>
-        <small>Vérifiez l'orthographe ou essayez avec le prénom seul.</small>
-      </div>`;
-    return;
-  }
-
-  let html = '';
-  if (trouves.length > 1) {
-    html += `<p class="multi-info">${trouves.length} résultats trouvés :</p>`;
-  }
-
-  trouves.forEach(e => {
-    const [nom, table, rang, decision] = e;
-
-    // Tag décision
-    let tagClass = '', tagTxt = '';
-    if      (decision === "Admis")       { tagClass = 'tag-admis';    tagTxt = '✓ Admis(e)'; }
-    else if (decision === "En révision") { tagClass = 'tag-revision'; tagTxt = '⏳ En révision'; }
-    else if (decision === "Ajourné")     { tagClass = 'tag-ajourne';  tagTxt = '✗ Ajourné(e)'; }
-    else                                  { tagClass = 'tag-table';    tagTxt = 'Notes manquantes'; }
-
-    const rangAff = rang
-      ? `<div class="rang-bloc">
-           <div class="rang-label">Rang</div>
-           <div class="rang-val">${rang}</div>
-           <div class="rang-sur">/ 89</div>
-         </div>`
-      : '';
-
-    const infoAff = rang
-      ? `<div class="carte-infos">
-           <strong>Décision :</strong> ${decision}<br>
-           <strong>N° de table :</strong> ${table}
-         </div>`
-      : `<div class="carte-infos"><strong>N° de table :</strong> ${table}<br><span style="color:#aaa">Notes en cours de saisie</span></div>`;
-
-    html += `
-    <div class="carte">
-      <div class="carte-haut">
-        <div class="carte-nom">${nom}</div>
-        <div class="carte-meta">
-          <span class="tag tag-table">N° ${table}</span>
-          ${decision ? `<span class="tag ${tagClass}">${tagTxt}</span>` : ''}
-        </div>
-      </div>
-      <div class="carte-bas">
-        ${rangAff}
-        ${infoAff}
-      </div>
-    </div>`;
+function n(s){return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9 ']/g," ").trim()}
+function ch(val){
+  const q=n(val),div=document.getElementById('res');
+  if(q.length<3){div.innerHTML='';return}
+  const f=E.filter(e=>n(e[0]).includes(q));
+  if(!f.length){div.innerHTML=`<div class="vide"><div class="ic">🔍</div><p>Aucun résultat pour « ${val} »</p><small>Vérifiez l'orthographe ou essayez avec le prénom seul.</small></div>`;return}
+  let h='';
+  if(f.length>1)h+=`<p class="mi">${f.length} résultats trouvés :</p>`;
+  f.forEach(e=>{
+    const[nom,tab,ex,or,ma,rang,dec]=e;
+    const tot=(ex!==null)?(ex+or+ma).toFixed(1):'–';
+    const moy=(ex!==null)?(parseFloat(tot)/6).toFixed(2):'–';
+    const tc=dec==='retenu'?'tr':dec==='attente'?'ta':'tj';
+    const tt=dec==='retenu'?'✓ Admis — Retenu(e)':dec==='attente'?"⏳ Admis — Liste d'attente":'✗ Ajourné(e)';
+    const dc=dec==='retenu'?'dr':dec==='attente'?'da':'dj';
+    const dt=dec==='retenu'?'Admis(e) — Retenu(e)':dec==='attente'?"Admis(e) — Liste d'attente":'Ajourné(e)';
+    const notes=ex!==null?`<div class="cn2"><div class="ng">
+      <div class="nb"><div class="nl">Expl. texte</div><div class="nv">${ex}</div><div class="nm">/ 50</div></div>
+      <div class="nb"><div class="nl">Orthographe</div><div class="nv">${or}</div><div class="nm">/ 20</div></div>
+      <div class="nb"><div class="nl">Mathématiques</div><div class="nv">${ma}</div><div class="nm">/ 50</div></div>
+    </div><div class="tb">
+      <div class="tbo t1"><div class="tl">Total</div><div class="tv">${tot} <span style="font-size:12px;color:#888;font-weight:500">/ 120</span></div></div>
+      <div class="tbo t2"><div class="tl">Moyenne</div><div class="tv">${moy} <span style="font-size:12px;color:#999;font-weight:500">/ 20</span></div></div>
+    </div></div>`:`<div class="cn2" style="color:#aaa;font-size:13px;padding:12px 20px">Notes en cours de saisie</div>`;
+    const rb=rang?`<div class="rb"><div class="rbl">Rang</div><div class="rbv">${rang}</div><div class="rbs">/ 89</div></div>`:'';
+    h+=`<div class="carte"><div class="ch"><div class="cn">${nom}</div><div class="cm"><span class="tag tt">N° ${tab}</span><span class="tag ${tc}">${tt}</span></div></div>${notes}<div class="cb">${rb}<div class="db ${dc}">${dt}</div></div></div>`;
   });
-
-  div.innerHTML = html;
+  div.innerHTML=h;
 }
-
-document.getElementById('saisie').addEventListener('keydown', e => {
-  if (e.key === 'Enter') chercher(e.target.value);
-});
+document.getElementById('saisie').addEventListener('keydown',e=>{if(e.key==='Enter')ch(e.target.value)});
 </script>
 </body>
 </html>
-

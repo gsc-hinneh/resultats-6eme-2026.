@@ -1,1 +1,519 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Résultats 2ème Test – Entrée en 6ème – École Hînneh Biabou 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --vert-fonce:  #0d3d24;
+    --vert-moyen:  #1a6b3c;
+    --vert-clair:  #d4ede0;
+    --or:          #c9952a;
+    --or-pale:     #fdf3dc;
+    --or-trait:    #e8c96a;
+    --blanc:       #ffffff;
+    --gris-fond:   #f4f2ed;
+    --gris-bord:   #ddd8ce;
+    --texte:       #1a1a1a;
+    --admis-bg:    #e6f4ee;
+    --admis-txt:   #0d5c2e;
+    --non-bg:      #fdecea;
+    --non-txt:     #b91c1c;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    background: var(--gris-fond);
+    color: var(--texte);
+    min-height: 100vh;
+  }
+
+  /* ── EN-TÊTE ── */
+  header {
+    background: var(--vert-fonce);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .header-motif {
+    position: absolute; inset: 0;
+    background-image: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 18px,
+      rgba(255,255,255,0.03) 18px,
+      rgba(255,255,255,0.03) 19px
+    );
+  }
+  .header-inner {
+    position: relative;
+    padding: 28px 24px 22px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .header-top {
+    display: flex; align-items: center; gap: 14px;
+  }
+  .embleme {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: var(--or);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Amiri', serif;
+    font-size: 26px; color: #fff;
+    flex-shrink: 0;
+    box-shadow: 0 0 0 3px rgba(201,149,42,0.35);
+  }
+  .header-titres { text-align: left; }
+  .titre-ecole {
+    font-family: 'Amiri', serif;
+    font-size: clamp(17px, 4vw, 24px);
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+  }
+  .titre-sous {
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+    margin-top: 3px;
+  }
+  .header-badge {
+    background: var(--or);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 5px 18px;
+    border-radius: 20px;
+  }
+
+  /* ── BANDEAU STATS ── */
+  .stats {
+    background: var(--or-pale);
+    border-top: 2px solid var(--or-trait);
+    border-bottom: 2px solid var(--or-trait);
+    padding: 12px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+  .stat-item {
+    display: flex; align-items: center; gap: 7px;
+    background: #fff;
+    border: 1.5px solid var(--gris-bord);
+    border-radius: 30px;
+    padding: 5px 16px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .stat-dot {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot-total  { background: var(--vert-moyen); }
+  .dot-admis  { background: #15803d; }
+  .dot-rev    { background: #b45309; }
+  .dot-adj    { background: #b91c1c; }
+
+  /* ── ZONE RECHERCHE ── */
+  .recherche-zone {
+    max-width: 540px;
+    margin: 36px auto 0;
+    padding: 0 18px;
+  }
+  .recherche-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--vert-moyen);
+    letter-spacing: .3px;
+    margin-bottom: 9px;
+  }
+  .recherche-wrap {
+    display: flex;
+    background: #fff;
+    border: 2px solid var(--gris-bord);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 14px rgba(0,0,0,.07);
+    transition: border-color .2s;
+  }
+  .recherche-wrap:focus-within {
+    border-color: var(--or);
+    box-shadow: 0 0 0 3px rgba(201,149,42,.15);
+  }
+  #saisie {
+    flex: 1;
+    border: none; outline: none;
+    padding: 14px 18px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--texte);
+    background: transparent;
+  }
+  #saisie::placeholder { color: #bbb; font-weight: 400; }
+  .btn-chercher {
+    background: var(--vert-moyen);
+    color: #fff;
+    border: none; cursor: pointer;
+    padding: 0 22px;
+    font-size: 20px;
+    transition: background .2s;
+    display: flex; align-items: center;
+  }
+  .btn-chercher:hover { background: var(--vert-fonce); }
+  .aide {
+    text-align: center;
+    font-size: 12px;
+    color: #999;
+    margin-top: 8px;
+  }
+
+  /* ── RÉSULTATS ── */
+  #resultats {
+    max-width: 540px;
+    margin: 20px auto 50px;
+    padding: 0 18px;
+  }
+
+  .multi-info {
+    font-size: 13px; font-weight: 600;
+    color: #666;
+    margin-bottom: 12px;
+  }
+
+  /* ── CARTE ── */
+  .carte {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 3px 18px rgba(0,0,0,.09);
+    overflow: hidden;
+    margin-bottom: 14px;
+    animation: glisse .3s ease;
+  }
+  @keyframes glisse {
+    from { opacity:0; transform:translateY(14px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  .carte-haut {
+    padding: 16px 20px 12px;
+    border-bottom: 1.5px solid var(--gris-bord);
+  }
+  .carte-nom {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--vert-fonce);
+    line-height: 1.3;
+    margin-bottom: 6px;
+  }
+  .carte-meta {
+    display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
+  }
+  .tag {
+    font-size: 11px; font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: .3px;
+  }
+  .tag-table {
+    background: var(--gris-fond);
+    color: #666;
+    border: 1px solid var(--gris-bord);
+  }
+  .tag-admis {
+    background: var(--admis-bg);
+    color: var(--admis-txt);
+  }
+  .tag-revision {
+    background: #fff7ed;
+    color: #92400e;
+  }
+  .tag-ajourne {
+    background: var(--non-bg);
+    color: var(--non-txt);
+  }
+
+  .carte-bas {
+    padding: 12px 20px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .rang-bloc {
+    text-align: center;
+    background: var(--gris-fond);
+    border-radius: 10px;
+    padding: 8px 14px;
+    min-width: 64px;
+    flex-shrink: 0;
+  }
+  .rang-label { font-size: 10px; font-weight: 700; color: #999; text-transform: uppercase; letter-spacing:.5px; }
+  .rang-val   { font-size: 22px; font-weight: 800; color: var(--vert-moyen); line-height:1.1; }
+  .rang-sur   { font-size: 11px; color: #aaa; }
+  .carte-infos {
+    flex:1;
+    font-size: 13px;
+    color: #555;
+    line-height: 1.7;
+  }
+  .carte-infos strong { color: var(--texte); font-weight: 600; }
+
+  /* Pas de résultat */
+  .vide {
+    text-align: center;
+    padding: 44px 20px;
+    color: #aaa;
+  }
+  .vide .icone { font-size: 38px; margin-bottom: 12px; }
+  .vide p { font-size: 15px; font-weight: 600; color: #888; }
+  .vide small { font-size: 13px; }
+
+  /* ── PIED ── */
+  footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+    color: #aaa;
+    border-top: 1px solid var(--gris-bord);
+    background: #fff;
+  }
+  footer strong { color: var(--vert-moyen); }
+
+  @media (max-width: 420px) {
+    .carte-bas { flex-direction: column; align-items: flex-start; }
+    .rang-bloc { min-width: unset; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-motif"></div>
+  <div class="header-inner">
+    <div class="header-top">
+      <div class="embleme">ﻩ</div>
+      <div class="header-titres">
+        <div class="titre-ecole">Groupe Scolaire Confessionnel Hînneh</div>
+        <div class="titre-sous">Campus de Biabou — Abobo — COSIM · Côte d'Ivoire</div>
+      </div>
+    </div>
+    <div class="header-badge">2ème Test d'entrée en 6ème · Juillet 2026</div>
+  </div>
+</header>
+
+<div class="stats">
+  <div class="stat-item"><span class="stat-dot dot-total"></span>90 candidats</div>
+  <div class="stat-item"><span class="stat-dot dot-admis"></span>58 admis</div>
+  <div class="stat-item"><span class="stat-dot dot-rev"></span>15 en révision</div>
+  <div class="stat-item"><span class="stat-dot dot-adj"></span>16 ajournés</div>
+</div>
+
+<div class="recherche-zone">
+  <label class="recherche-label" for="saisie">Rechercher le résultat de votre enfant</label>
+  <div class="recherche-wrap">
+    <input type="text" id="saisie"
+           placeholder="Saisir le nom ou le prénom…"
+           autocomplete="off" autocorrect="off" spellcheck="false"
+           oninput="chercher(this.value)" />
+    <button class="btn-chercher" onclick="chercher(document.getElementById('saisie').value)">→</button>
+  </div>
+  <p class="aide">Minimum 3 lettres · Insensible aux accents et à la casse</p>
+</div>
+
+<div id="resultats"></div>
+
+<footer>
+  <strong>GSC Hînneh · Campus Biabou</strong> — Résultats provisoires · Année scolaire 2026–2027<br>
+  Pour toute réclamation, s'adresser au secrétariat du campus · Code : 057 908
+</footer>
+
+<script>
+// ── BASE DE DONNÉES — 2ème TEST — 90 candidats ──
+// Format : [nom_complet, no_table, rang, decision]
+// decision : "Admis" | "En révision" | "Ajourné"
+const ELEVES = [
+  // ADMIS (58)
+  ["GUINDO AICHA",              "2689", 1,  "Admis"],
+  ["COULIBALY HAYA AMINATE",    "2616", 2,  "Admis"],
+  ["TRAORE N'GOLO MOUSSA",      "2670", 3,  "Admis"],
+  ["COULIBALY ALYA",            "2626", 4,  "Admis"],
+  ["N'TAKPE DANIEL",            "2620", 5,  "Admis"],
+  ["DOUMBIA ZEINAB NOURA",      "2646", 6,  "Admis"],
+  ["GUEI DIABY FANTA",          "2650", 7,  "Admis"],
+  ["SANGARE ADAMA MALICK",      "2652", 8,  "Admis"],
+  ["SY SAVANE AL HASSANE",      "2676", 8,  "Admis"],
+  ["DIARRASSOUBA ALMAMI",       "2653", 9,  "Admis"],
+  ["BAIKORO AMINAT SAMIRA",     "2654", 10, "Admis"],
+  ["AZEEZ KHALID",              "2602", 11, "Admis"],
+  ["OUATTARA DJENEBA",          "2614", 12, "Admis"],
+  ["DRAME ROUKIATOU",           "2644", 13, "Admis"],
+  ["OLADYE FARIDATU",           "2678", 13, "Admis"],
+  ["BAMBA MOHAMED AYOUB",       "2628", 14, "Admis"],
+  ["SALAMI MOHAMED MUBARAK",    "2660", 14, "Admis"],
+  ["AKANGBE RAYAN RAMADA",      "2640", 15, "Admis"],
+  ["DIARRASSOUBA MOYELE",       "2638", 16, "Admis"],
+  ["SOULEMANA DJALILA",         "2607", 17, "Admis"],
+  ["CAMARA ALIMETOU",           "2635", 17, "Admis"],
+  ["KONE SONGUIDA FATIMA C.",   "2642", 18, "Admis"],
+  ["DIALLO KADIDJATOU",         "2608", 19, "Admis"],
+  ["KOFFI JOSUE",               "2621", 19, "Admis"],
+  ["SANOGO KHADY POOR",         "2617", 20, "Admis"],
+  ["SOUMAHORO ALLASSANE",       "2623", 21, "Admis"],
+  ["TRAORE TENIN",              "2606", 21, "Admis"],
+  ["GUIRE NABI YOUSSOUF",       "2668", 22, "Admis"],
+  ["OUATTARA ZIE",              "2619", 22, "Admis"],
+  ["KAMARA MARIAME Y.",         "2631", 23, "Admis"],
+  ["KONE FATOUMATA ZARA",       "2651", 24, "Admis"],
+  ["CISSE AICHATOU",            "2630", 24, "Admis"],
+  ["FOFANA EL AMINE MEMASSA",   "2659", 24, "Admis"],
+  ["DAO ADAMA",                 "2661", 25, "Admis"],
+  ["DIARRASSOUBA LAMINE",       "2686", 25, "Admis"],
+  ["OUATTARA AYOUBA",           "2677", 26, "Admis"],
+  ["FOFANA NOURA MAFINY",       "2674", 26, "Admis"],
+  ["DIALLA LAYE OUSMANE",       "2675", 26, "Admis"],
+  ["TRAORE CHEICK HAMED",       "2645", 27, "Admis"],
+  ["KAMA ISMAEL",               "2643", 27, "Admis"],
+  ["KONE ABDOUL GAFAR",         "2622", 28, "Admis"],
+  ["GANGABE NOURA KENZA",       "2627", 29, "Admis"],
+  ["BUSARI MOHAMED",            "2669", 30, "Admis"],
+  ["BAMBA HADAM'S NOSSIAGBE",   "2671", 30, "Admis"],  // recheck: OUALITTA ZIE MOUSSA
+  ["OUALITTA ZIE MOUSSA",       "2671", 31, "Admis"],
+  ["TOE ABDOUL MAJID",          "2632", 32, "Admis"],
+  ["DAO LATIFA DAOUDA",         "2662", 32, "Admis"],
+  ["KONATE ADTARA FATIMA",      "2663", 33, "Admis"],
+  ["BAKAYOKO MAIMOUNA",         "2618", 34, "Admis"],
+  ["TRAORE FATOUMATA",          "2612", 35, "Admis"],
+  ["SIDIBE KANI",               "2679", 36, "Admis"],
+  ["DIARRA MOHAMED ABIB",       "2672", 37, "Admis"],
+  ["OUATTARA HOURIA",           "2664", 38, "Admis"],
+  ["KONE AICHA YASMINE",        "2656", 38, "Admis"],
+  ["FOFANA KADIDIA",            "2682", 39, "Admis"],
+  ["TAPSOBA ZEINAB",            "2688", 39, "Admis"],
+  ["AJADI SAHADAT",             "2610", 40, "Admis"],
+  ["ALYA MADINA",               "2613", 41, "Admis"],
+  // EN RÉVISION (15)
+  ["SANKARA MOUHAMED",          "2611", 42, "En révision"],
+  ["CISSE NABINTOU ZARA",       "2673", 43, "En révision"],
+  ["TRAORE ABOUBACAR",          "2615", 44, "En révision"],
+  ["SOGODOGO ALIMATA S.",        "2625", 45, "En révision"],
+  ["DIARRASSOUBA SIRA YASMINE", "2639", 46, "En révision"],
+  ["SOUMAHORO CHEICK",          "2641", 47, "En révision"],
+  ["TRAORE YELI MASSANDJE",     "2633", 48, "En révision"],
+  ["TRAORE RAHIMA ALIMATOU",    "2634", 49, "En révision"],
+  ["AJADI SOBIRA",              "2609", 50, "En révision"],
+  ["OUEDRAOGO MOHAMED",         "2604", 51, "En révision"],
+  ["BODE FAHICORT",             "2605", 52, "En révision"],
+  ["TRAORE CHEICK",             "2603", 53, "En révision"],
+  ["DIABAGATE ISMAEL",          "2649", 54, "En révision"],
+  ["MOHAMED IBRAHIMA RAKIA",    "2629", 55, "En révision"],
+  ["SOUMAHORO ABOUBAKAR",       "2624", 56, "En révision"],
+  // AJOURNÉS (16)
+  ["KONE KADER AZIZ",           "2637", 57, "Ajourné"],
+  ["DIALLO FATOUMATA",          "2647", 58, "Ajourné"],
+  ["SOUMAHORO MOHAMED",         "2655", 59, "Ajourné"],
+  ["DIAKITE OUSMANE",           "2648", 60, "Ajourné"],
+  ["GUIDOONE BINTOU",           "2658", 61, "Ajourné"],
+  ["OUEDRAOGO IBRAHIM",         "2636", 62, "Ajourné"],
+  ["SANGARE OUSMANE",           "2681", 63, "Ajourné"],
+  ["BAYONARE YASMINE",          "2690", 64, "Ajourné"],
+  ["SIDIBE BEN HAMAIDE",        "2666", 65, "Ajourné"],
+  ["COULIBALY MAIMOUNA",        "2687", 66, "Ajourné"],
+  ["ADTIBADE RAYAN",            "2667", 67, "Ajourné"],
+  ["IBRAHEE AL ANINULAYI",      "2684", 68, "Ajourné"],
+  ["ZIDA SEYDOU",               "2685", 68, "Ajourné"],
+  ["DIOMANDE BEN AZIZ",         "2665", 69, "Ajourné"],
+  ["DIABY MASSANDJE",           "2680", 70, "Ajourné"],
+  ["BAMBA MORY VANLY",          "2683", 71, "Ajourné"],
+  // SANS NOTES
+  ["KONE HASSANE",              "2601", null, null],
+];
+
+function normalise(str) {
+  return str.toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9 ']/g, " ").trim();
+}
+
+function chercher(val) {
+  const q = normalise(val);
+  const div = document.getElementById('resultats');
+  if (q.length < 3) { div.innerHTML = ''; return; }
+
+  const trouves = ELEVES.filter(e => normalise(e[0]).includes(q));
+
+  if (trouves.length === 0) {
+    div.innerHTML = `
+      <div class="vide">
+        <div class="icone">🔍</div>
+        <p>Aucun résultat pour « ${val} »</p>
+        <small>Vérifiez l'orthographe ou essayez avec le prénom seul.</small>
+      </div>`;
+    return;
+  }
+
+  let html = '';
+  if (trouves.length > 1) {
+    html += `<p class="multi-info">${trouves.length} résultats trouvés :</p>`;
+  }
+
+  trouves.forEach(e => {
+    const [nom, table, rang, decision] = e;
+
+    // Tag décision
+    let tagClass = '', tagTxt = '';
+    if      (decision === "Admis")       { tagClass = 'tag-admis';    tagTxt = '✓ Admis(e)'; }
+    else if (decision === "En révision") { tagClass = 'tag-revision'; tagTxt = '⏳ En révision'; }
+    else if (decision === "Ajourné")     { tagClass = 'tag-ajourne';  tagTxt = '✗ Ajourné(e)'; }
+    else                                  { tagClass = 'tag-table';    tagTxt = 'Notes manquantes'; }
+
+    const rangAff = rang
+      ? `<div class="rang-bloc">
+           <div class="rang-label">Rang</div>
+           <div class="rang-val">${rang}</div>
+           <div class="rang-sur">/ 89</div>
+         </div>`
+      : '';
+
+    const infoAff = rang
+      ? `<div class="carte-infos">
+           <strong>Décision :</strong> ${decision}<br>
+           <strong>N° de table :</strong> ${table}
+         </div>`
+      : `<div class="carte-infos"><strong>N° de table :</strong> ${table}<br><span style="color:#aaa">Notes en cours de saisie</span></div>`;
+
+    html += `
+    <div class="carte">
+      <div class="carte-haut">
+        <div class="carte-nom">${nom}</div>
+        <div class="carte-meta">
+          <span class="tag tag-table">N° ${table}</span>
+          ${decision ? `<span class="tag ${tagClass}">${tagTxt}</span>` : ''}
+        </div>
+      </div>
+      <div class="carte-bas">
+        ${rangAff}
+        ${infoAff}
+      </div>
+    </div>`;
+  });
+
+  div.innerHTML = html;
+}
+
+document.getElementById('saisie').addEventListener('keydown', e => {
+  if (e.key === 'Enter') chercher(e.target.value);
+});
+</script>
+</body>
+</html>
 
